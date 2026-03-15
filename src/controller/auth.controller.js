@@ -19,6 +19,11 @@ export async function register(req, res) {
 
   const user = await userModel.create({ username, email, password });
 
+  const emailVerificationToken = jwt.sign({
+    email:user.email,
+
+  },process.env.JWT_SECRET)
+
   await sendEmail({
     to: email,
     subject: "Welcome to Perplexity!",
@@ -26,7 +31,10 @@ export async function register(req, res) {
     
             <p>Hello <strong>${username}</strong>,</p>
             <p> Welcome to our <strong> Perplexity</strong> app! We're glad to have you on board.</p>
-            <p>Best regards,<br/> The Perplexity Team</p>`,
+            <p>To get started, please verify your email address by clicking the link below:</p>
+            <a href="http:localhost:3000/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+            <p>If you didn't create an account, please ignore this email.</p>
+            <p>Best regards,<br/> The Perplexity Team</p>`
   });
 
 
