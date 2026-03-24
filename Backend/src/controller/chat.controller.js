@@ -23,7 +23,7 @@ export async function sendMessage(req, res) {
     role: "user",
   });
 
-  const messages = await messageModel.find({ chat: chatId || chat._id})
+  const messages = await messageModel.find({ chat: chatId || chat._id })
 
   const result = await generateResponse(messages);
 
@@ -33,7 +33,7 @@ export async function sendMessage(req, res) {
     role: "ai",
   });
 
-  res.status(201).json({ aimessage: result, title, chat, aiMessage });
+  res.status(201).json({ title, chat, aiMessage });
 }
 
 export async function getChats(req, res) {
